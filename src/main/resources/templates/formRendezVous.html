@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="index.html">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Nouveau Rendez-vous</title>
+  <style>
+    body, .container, .card, .card-header, .card-body, .btn-outline-secondary, .form-label, .form-control, .btn-dark {
+      color:white;
+    }
+    .container, .card-header, .btn-outline-secondary, .form-label, .btn-dark {
+      font-weight: bold; /* Texte en gras */
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      /*background: linear-gradient(to right, #000000, #0000FF); Dégradé de noir à bleu */
+      color: white; /* Couleur du texte en blanc */
+    }
+
+    .container {
+      margin: 0 auto; /* Centrer le contenu horizontalement */
+      max-width: 800px; /* Largeur maximale du contenu */
+      padding: 20px; /* Espacement intérieur */
+    }
+
+    .card {
+      background-color: rgba(64, 93, 131, 0.25);
+      color: white; /* Couleur du texte en blanc */
+    }
+
+    .card-header {
+      background-color: rgba(255, 255, 255, 0.2); /* Fond du titre de la carte semi-transparent */
+      color: white; /* Couleur du texte en blanc */
+    }
+
+    .card-body {
+      padding: 20px; /* Espacement intérieur */
+    }
+
+    .btn-outline-secondary {
+      background-color: dodgerblue;
+      color: blanchedalmond; /* Couleur du texte en noir */
+      border-color: white; /* Couleur de la bordure en blanc */
+    }
+
+    .btn-outline-secondary:hover {
+      color: black; /* Couleur du texte en bleu au survol */
+      background-color: white; /* Fond en blanc au survol */
+    }
+
+    .form-label {
+      color: white; /* Couleur du texte en blanc */
+    }
+
+    .form-control {
+      background-color: rgba(255, 255, 255, 0.15); /* Fond semi-transparent */
+      color: white; /* Couleur du texte en blanc */
+      border-color: white; /* Couleur de la bordure en blanc */
+    }
+
+    .btn-dark {
+      background-color: dodgerblue; /* Couleur de fond */
+      color: white; /* Couleur du texte en blanc */
+    }
+
+    .btn-dark:hover {
+      background-color: #ADD8E6; /* Couleur légèrement plus foncée au survol */
+      border-color: #ADD8E6;
+    }
+    /* Modifier la couleur du bouton */
+    .btn-dark {
+      background-color: rgba(105, 152, 217, 0.5); /* Couleur de fond verte */
+      color: white; /* Couleur du texte en blanc */
+      margin-left: auto; /* Centrer le bouton horizontalement */
+      margin-top:10px;
+      margin-right: auto; /* Centrer le bouton horizontalement */
+      display: block; /* Afficher le bouton en tant que bloc pour centrer */
+      width: 20%; /* Largeur du bouton */
+    }
+
+    /* Au survol, changer la couleur du texte en noir */
+    .btn-dark:hover {
+      color: #e5d9d9;
+      background-color: rgb(0, 0, 0); /* Couleur de fond légèrement plus claire au survol */
+    }
+
+  </style>
+
+</head>
+
+<body>
+<div layout:fragment="content">
+  <div class="row">
+    <div class="card">
+      <div class="card-header">Ajouter un nouveau rendez-vous</div>
+      <div class="card-body">
+        <form th:action="@{/saveRendezVous}" method="post">
+          <input type="hidden" name="id" th:value="${rendezVous.id}">
+          <div class="mb-2">
+            <label class="form-label">Date</label>
+            <input type="date" name="date" class="form-control" th:value="${rendezVous.date}"
+                   min="[[${#dates.format(#dates.createNow(),'yyyy-MM-dd')}]]">
+
+            <label class="form-label">Médecin</label>
+            <select name="medcins" class="form-control">
+              <option value="">-- Sélectionner un médecin --</option>
+              <option th:each="medcin : ${medcinList}"
+                      th:value="${medcin.id}"
+                      th:text="${medcin.nom}"
+                      th:selected="${rendezVous.medcins != null and medcin.id == rendezVous.medcins.id}"></option>
+            </select>
+
+            <label class="form-label">Patient</label>
+            <select name="patients" class="form-control">
+              <option value="">-- Sélectionner un patient --</option>
+              <option th:each="patient : ${patientList}"
+                      th:value="${patient.id}"
+                      th:text="${patient.nom}"
+                      th:selected="${patient.id == patientId}"></option>
+            </select>
+            <button class="btn btn-dark">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  document.addEventListener("DOMContentLoaded", function () {
+    var input = document.getElementById('searchPatient');
+    var select = document.getElementById('patientList');
+    var options = select.getElementsByTagName('option');
+
+    function resetPatientList() {
+      for (var i = 0; i < options.length; i++) {
+        options[i].style.display = 'block'; // Show all options
+      }
+    }
+
+    input.addEventListener('input', function () {
+      var searchValue = this.value.trim().toLowerCase();
+
+      for (var i = 0; i < options.length; i++) {
+        var option = options[i];
+        var optionText = option.text.trim().toLowerCase();
+        if (optionText.includes(searchValue)) {
+          option.style.display = 'block'; // Show the option
+        } else {
+          option.style.display = 'none'; // Hide the option
+        }
+      }
+    });
+
+    var selectButton = document.getElementById('selectPatientButton');
+    selectButton.addEventListener('click', function () {
+      var selectedOption = select.querySelector('option:checked');
+      if (selectedOption) {
+        alert('Patient sélectionné : ' + selectedOption.text);
+        // Vous pouvez faire quelque chose avec le patient sélectionné ici
+        resetPatientList(); // Réinitialiser la liste des patients
+      } else {
+        alert('Aucun patient sélectionné');
+      }
+    });
+  });
+  /*]]>*/
+</script>
+
+</body>
+
+</html>

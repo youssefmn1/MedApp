@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="index.html"
+>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Nouveau Patient</title>
+    <style>
+        body, .container, .card, .card-header, .card-body, .btn-outline-secondary, .form-label, .form-control, .btn-dark {
+            color:white;
+        }
+        .container, .card-header, .btn-outline-secondary, .form-label, .btn-dark {
+            font-weight: bold; /* Texte en gras */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            /*background: linear-gradient(to right, #000000, #0000FF); Dégradé de noir à bleu */
+            color: white; /* Couleur du texte en blanc */
+        }
+
+        .container {
+            margin: 0 auto; /* Centrer le contenu horizontalement */
+            max-width: 800px; /* Largeur maximale du contenu */
+            padding: 20px; /* Espacement intérieur */
+        }
+
+        .card {
+            background-color: rgba(64, 93, 131, 0.25);
+            color: white; /* Couleur du texte en blanc */
+        }
+
+        .card-header {
+            background-color: rgba(255, 255, 255, 0.2); /* Fond du titre de la carte semi-transparent */
+            color: white; /* Couleur du texte en blanc */
+        }
+
+        .card-body {
+            padding: 20px; /* Espacement intérieur */
+        }
+
+        .btn-outline-secondary {
+            background-color: dodgerblue;
+            color: blanchedalmond; /* Couleur du texte en noir */
+            border-color: white; /* Couleur de la bordure en blanc */
+        }
+
+        .btn-outline-secondary:hover {
+            color: black; /* Couleur du texte en bleu au survol */
+            background-color: white; /* Fond en blanc au survol */
+        }
+
+        .form-label {
+            color: white; /* Couleur du texte en blanc */
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.15); /* Fond semi-transparent */
+            color: white; /* Couleur du texte en blanc */
+            border-color: white; /* Couleur de la bordure en blanc */
+        }
+
+        .btn-dark {
+            background-color: dodgerblue; /* Couleur de fond */
+            color: white; /* Couleur du texte en blanc */
+        }
+
+        .btn-dark:hover {
+            background-color: #ADD8E6; /* Couleur légèrement plus foncée au survol */
+            border-color: #ADD8E6;
+        }
+        /* Modifier la couleur du bouton */
+        .btn-dark {
+            background-color: rgba(105, 152, 217, 0.5); /* Couleur de fond verte */
+            color: white; /* Couleur du texte en blanc */
+            margin-left: auto; /* Centrer le bouton horizontalement */
+            margin-top:10px;
+            margin-right: auto; /* Centrer le bouton horizontalement */
+            display: block; /* Afficher le bouton en tant que bloc pour centrer */
+            width: 20%; /* Largeur du bouton */
+        }
+
+        /* Au survol, changer la couleur du texte en noir */
+        .btn-dark:hover {
+            color: #e5d9d9;
+            background-color: rgb(0, 0, 0); /* Couleur de fond légèrement plus claire au survol */
+        }
+
+    </style>
+</head>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="card">
+            <div class="card-header">Ajouter un nouveau patient</div>
+            <div class="card-body">
+                <form th:action="@{/savePatient}" method="post">
+                    <input type="hidden" name="id" th:value="${patient.id}">
+                    <div class="mb-2">
+                        <label class="form-label">Nom</label>
+                        <input type="text" name="nom" class="form-control" th:value="${patient.nom}">
+                        <label class="form-label">Age</label>
+                        <input type="text" name="age" class="form-control" th:value="${patient.age}">
+                        <button class="btn btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</html>

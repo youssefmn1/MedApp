@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="index.html">
+
+<head>
+    <meta charset="UTF-8">
+    <title>medAPP</title>
+    <style>
+        body, .container, .card, .card-header, .card-body, .btn-outline-secondary, .table, .table th, .table td, a {
+            color:white;
+        }
+        .container,.card-header, .btn-outline-secondary, .table{
+            font-weight: bold; /* Texte en gras */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            /*background: linear-gradient(to right, #000000, #0000FF); Dégradé de noir à bleu */
+            color: white; /* Couleur du texte en blanc */
+
+        }
+
+        .container {
+            margin: 0 auto; /* Centrer le contenu horizontalement */
+            max-width: 800px; /* Largeur maximale du contenu */
+            padding: 20px; /* Espacement intérieur */
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.1); /* Fond de la carte semi-transparent */
+            color: white; /* Couleur du texte en blanc */
+        }
+
+        .card-header {
+            background-color: rgba(255, 255, 255, 0.2); /* Fond du titre de la carte semi-transparent */
+            color: white; /* Couleur du texte en blanc */
+        }
+
+        .card-body {
+            padding: 20px; /* Espacement intérieur */
+        }
+        .btn-outline-secondary {
+            background-color: dodgerblue;
+            color: blanchedalmond; /* Couleur du texte en noir */
+            border-color: white; /* Couleur de la bordure en blanc */
+        }
+
+        .btn-outline-secondary:hover {
+            color: black; /* Couleur du texte en bleu au survol */
+            background-color: white; /* Fond en blanc au survol */
+        }
+
+
+        /* Fond de la table en gris transparent */
+        .table {
+            background-color: rgba(97, 99, 182, 0.35); /* Fond de la table semi-transparent en gris */
+            color: white; /* Couleur du texte en blanc */
+        }
+
+        /* Autres styles de la table */
+        .table a {
+            color: white; /* Couleur du texte en blanc pour tous les liens */
+        }
+
+        .table th, .table td {
+            border-color: white; /* Couleur de la bordure en blanc */
+        }
+
+        .table-striped tbody tr {
+            background-color: rgba(255, 255, 255, 0.05); /* Toutes les lignes du tableau avec fond semi-transparent */
+        }
+
+        .table-striped tbody tr td {
+            color: white; /* Couleur du texte en noir pour toutes les lignes */
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) td {
+            background-color: rgba(255, 255, 255, 0.15); /* Lignes paires et impaires du tableau avec fond semi-transparent */
+            color: white; /* Couleur du texte en blanc */
+        }
+        .table-striped tbody tr:nth-of-type(even) td{
+            background-color: rgba(255, 255, 255, 0.05); /* Lignes paires et impaires du tableau avec fond semi-transparent */
+            color: white; /* Couleur du texte en blanc */
+        }
+        .nav-pills li a {
+            color: white; /* Couleur des liens en blanc */
+        }
+
+        .btn-custom-blue {
+            color: white;
+            background-color: dodgerblue; /* Utilisez la couleur bleue claire de votre choix */
+            border-color: #87CEFA; /* Utilisez la même couleur pour la bordure */
+        }
+
+        .btn-custom-blue:hover {
+            background-color: #ADD8E6; /* Couleur légèrement plus foncée au survol */
+            border-color: #ADD8E6;
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="p-2">
+        <div class="card">
+            <div class="card-header">Liste des Rendez-vous</div>
+            <div class="card-body">
+              <!--  <form method="get" th:action="@{/indexRendezVous}">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Rechercher par patient" name="keyword" th:value="${keyword}">
+                        <button class="btn btn-outline-secondary" type="submit">Rechercher</button>
+                    </div>
+                </form>-->
+                <div class="input-group mb-3">
+                    <form method="get" th:action="@{/indexRendezVous}">
+                        <input type="date" name="date" class="form-control" th:value="${date}"
+                               min="${#dates.format(#dates.createNow(),'yyyy-MM-dd')}">
+                        <button type="submit" class="btn btn-outline-secondary">Rechercher</button>
+                    </form>
+                </div>
+
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Date</th>
+                        <th>Medecin</th>
+                        <th>Patient</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="r : ${listRendezVous}">
+                        <td th:text="${r.id}"></td>
+                        <td th:text="${r.date}"></td>
+                        <td th:text="${r.medcins != null ? r.medcins.nom : ''}"></td>
+                        <!--<td th:text="${r.patients != null ? r.patients.nom : ''}"></td>-->
+                        <td>
+                            <span>
+                                <a th:href="@{'/infoPatient?id=' + ${r.patients.id}}"
+                                   th:text="${r.patients.nom}">
+                                </a>
+                            </span>
+                        </td>
+                        <td>
+                            <a th:href="@{/editRendezVous(id=${r.id}, patientId=${r.patients.id})}" class="btn btn-primary">Modifier</a>
+                        </td>
+                        <td>
+                            <a onclick="return confirm('Êtes-vous sûr ?')"
+                               th:href="@{/deleteRendezVous(id=${r.id},keyword=${keyword},page=${currentPage})}"
+                               class="btn btn-danger">Supprimer</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ul class="nav nav-pills">
+                    <li th:each="page,status:${pages}">
+                        <a th:href="@{/indexRendezVous(page=${status.index},keyword=${keyword})}"
+                           th:class="${currentPage==status.index?'btn btn-info ms-1':'btn btn-outline-primary ms-1'}"
+                           th:text="${1+status.index}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
