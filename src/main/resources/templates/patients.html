@@ -131,8 +131,9 @@
                         <th>Id</th>
                         <th>Nom</th>
                         <th>Age</th>
+                        <th>Telephone</th>
                         <th>Consultation</th>
-                        <th>Rendez vous</th>
+                        <th>Rendez-vous</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -145,6 +146,7 @@
                         <td th:text="${pt.id}"></td>
                         <td th:text="${pt.nom}"></td>
                         <td th:text="${pt.age}"></td>
+                        <td th:text="${pt.tele != null ? '+' + pt.tele : 'N/A'}"></td> <!-- Display phone number with '+' or default message -->
                         <td>
                             <span th:if="${#lists.size(pt.consultations) > 0}">
                                 <a th:href="@{'/indexConsultation?patientId=' + ${pt.id}}">

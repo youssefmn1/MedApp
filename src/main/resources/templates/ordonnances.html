@@ -131,7 +131,7 @@
                         <td th:if="${ordonnance.consultation != null}" th:utext="${ordonnance.consultation.id + ' - Dr : ' + ordonnance.consultation.medcins.nom + ' &lt;br&gt; ' + ordonnance.consultation.patients.nom}"></td>
                         <td th:unless="${ordonnance.consultation != null}">No consultation</td>
                         <td>
-                            <a th:href="@{'http://localhost:8066/viewPdf?ordonnanceId=' + ${ordonnance.id}}" target="_blank">Voir le PDF</a>
+                            <a th:href="@{'http://localhost:8086/viewPdf?ordonnanceId=' + ${ordonnance.id}}" target="_blank">Voir le PDF</a>
                         </td>
                         <td>
                             <a th:href="@{/editOrdonnance(id=${ordonnance.id})}" class="btn btn-primary">Modifier</a>

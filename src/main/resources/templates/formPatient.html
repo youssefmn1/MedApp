@@ -101,15 +101,19 @@
                     <div class="mb-2">
                         <label class="form-label">Nom</label>
                         <input type="text" name="nom" class="form-control" th:value="${patient.nom}">
+                    </div>
+                    <div class="mb-2">
                         <label class="form-label">Age</label>
                         <input type="text" name="age" class="form-control" th:value="${patient.age}">
-                        <button class="btn btn-dark">Save</button>
                     </div>
+                    <div class="mb-2"> <!-- New field for telephone number -->
+                        <label class="form-label">Téléphone</label>
+                        <input type="text" name="tele" class="form-control" th:value="${patient.tele}">
+                    </div>
+                    <button class="btn btn-dark">Save</button>
                 </form>
             </div>
         </div>
     </div>
-
 </div>
-
 </html>

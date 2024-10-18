@@ -16,6 +16,7 @@ public class Patient {
     private Integer id;
     private String nom;
     private int age;
+    private long tele;
 
     @OneToMany(mappedBy = "patients")
     private Collection<Consultation> consultations;
